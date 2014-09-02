@@ -7,7 +7,7 @@ def main():
     desc = 'client tools for the tory ansible inventory'
     setup(
         name='tory-client',
-        url='https://github.com/modcloth/tory',
+        url='https://github.com/modcloth/tory-client',
         author='ModCloth, Inc.',
         author_email='platformsphere+pypi@modcloth.com',
         description=desc,
