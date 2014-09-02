@@ -4,8 +4,10 @@ python:
 - '2.7'
 - '3.3'
 - pypy
+env:
+  global:
+  - PYTEST_FLAGS="--cov-report term-missing --cov tory_sync_from_joyent --cov tory_register --cov tory_inventory --pep8 -rs"
 matrix:
   allowed_failures:
   - python: '3.3'
-  - python: pypy
 script: make
