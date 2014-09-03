@@ -2,12 +2,9 @@
 language: python
 python:
 - '2.7'
-- '3.3'
+- '3.4'
 - pypy
 env:
   global:
   - PYTEST_FLAGS="--cov-report term-missing --cov tory_sync_from_joyent --cov tory_register --cov tory_inventory --pep8 -rs"
-matrix:
-  allow_failures:
-  - python: '3.3'
 script: make

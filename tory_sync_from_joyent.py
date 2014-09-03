@@ -2,13 +2,17 @@
 # vim:fileencoding=utf-8
 
 import argparse
-import httplib
 import json
 import logging
 import os
 import sys
 
-from urlparse import urlparse
+try:
+    from urlparse import urlparse
+    import httplib as httpclient
+except ImportError:
+    from urllib.parse import urlparse
+    import http.client as httpclient
 
 
 USAGE = """%(prog)s [options]
@@ -51,7 +55,11 @@ def main(sysargs=sys.argv[:]):
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
     log = logging.getLogger('tory-sync-from-joyent')
 
-    machines = json.load(args.sdc_listmachines_json)
+    json_string = args.sdc_listmachines_json.read()
+    if sys.version >= '3':
+        json_string = json_string.decode('utf-8')
+
+    machines = json.loads(json_string)
     if hasattr(machines, 'keys'):
         machines = [machines]
 
@@ -104,7 +112,7 @@ def _stringified_dict(indict):
 
 def _put_host(server, auth_token, host_def):
     url = urlparse(server)
-    conn = httplib.HTTPConnection(
+    conn = httpclient.HTTPConnection(
         url.netloc.split(':')[0], int(url.port or 80)
     )
     conn.request(
