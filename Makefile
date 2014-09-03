@@ -6,5 +6,17 @@ PYTEST_FLAGS ?= \
 	--cov tory_inventory \
 	--pep8 -rs --pdb
 
-all:
+.PHONY: all
+all: clean test
+
+.PHONY: test
+test:
 	$(PYTEST) $(PYTEST_FLAGS) tests/
+
+.PHONY: clean
+clean:
+	git ls-files -o | xargs $(RM)
+
+.PHONY: distclean
+distclean:
+	git clean -dfx
