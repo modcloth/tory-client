@@ -2,7 +2,6 @@
 # vim:fileencoding=utf-8
 
 import argparse
-import httplib
 import json
 import logging
 import os
@@ -11,8 +10,14 @@ import socket
 import sys
 import time
 
-from itertools import ifilter
-from urlparse import urlparse
+try:
+    import httplib as httpclient
+    from itertools import ifilter
+    from urlparse import urlparse
+except ImportError:
+    ifilter = filter
+    import http.client as httpclient
+    from urllib.parse import urlparse
 
 HAS_NETIFACES = False
 
@@ -181,7 +186,7 @@ def _validate_host_def(host_def):
 
 def _put_host(server, auth_token, host_def):
     url = urlparse(server)
-    conn = httplib.HTTPConnection(
+    conn = httpclient.HTTPConnection(
         url.netloc.split(':')[0], int(url.port or 80)
     )
     conn.request(

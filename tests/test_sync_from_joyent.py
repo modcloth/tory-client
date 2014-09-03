@@ -2,6 +2,7 @@
 
 import json
 import os
+import sys
 
 from io import BytesIO
 
@@ -13,7 +14,10 @@ import tory_sync_from_joyent
 
 @pytest.fixture
 def sdc_listmachines_json_stream(sampledata):
-    return BytesIO(json.dumps(sampledata['joyent']['sdc_listmachines']))
+    sdc_bytes = json.dumps(sampledata['joyent']['sdc_listmachines'])
+    if sys.version >= '3':
+        sdc_bytes = sdc_bytes.encode('utf-8')
+    return BytesIO(sdc_bytes)
 
 
 def fake_put_host(server, auth_token, host_def):
