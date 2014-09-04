@@ -1,5 +1,5 @@
 VERSION ?= $(shell cat VERSION)
-MAX_COMPLEXITY ?= 12
+MAX_COMPLEXITY ?= 13
 PYTEST ?= py.test
 PYTEST_FLAGS ?= \
 	--cov-report term-missing \
