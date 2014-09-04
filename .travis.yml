@@ -8,3 +8,11 @@ env:
   global:
   - PYTEST_FLAGS="--cov-report term-missing --cov tory_sync_from_joyent --cov tory_register --cov tory_inventory --pep8 -rs"
 script: make
+deploy:
+  provider: pypi
+  user: modcloth
+  password:
+    secure: K0O8jJvdSkvH2epjXFk4bhDsMkhJptnox77uPh62M5SxuKeloSVXfPrpI7Er9nsRXz/cImy4db/4stxT6McFdP0V88MA+/soiCSLmbjoOcd6fKp7pYDkdxHjP50eGAZe9UHtP3hFWFWEkaeoQ+tR+4bg9570ITl37guYhxvRrG4=
+  on:
+    tags: true
+    repo: modcloth/tory-client
