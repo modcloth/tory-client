@@ -24,10 +24,6 @@ def fake_put_host(server, auth_token, host_def):
     return 200
 
 
-def get_fake_stdin():
-    return BytesIO(json.dumps(SDC_LISTMACHINES))
-
-
 def setup():
     os.environ.clear()
     mp = monkeypatch()

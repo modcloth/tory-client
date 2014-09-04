@@ -3,6 +3,9 @@ import sys
 from setuptools import setup
 
 
+__version__ = '0.5.1'
+
+
 def main():
     desc = 'client tools for the tory ansible inventory'
     setup(
@@ -12,7 +15,7 @@ def main():
         author_email='platformsphere+pypi@modcloth.com',
         description=desc,
         long_description=desc,
-        version='0.5.0',
+        version=__version__,
         classifiers=[
             'Development Status :: 4 - Beta',
             'Environment :: Console',

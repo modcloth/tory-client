@@ -15,6 +15,8 @@ except ImportError:
     import http.client as httpclient
 
 
+__version__ = '0.5.1'
+
 USAGE = """%(prog)s [options]
 
 populate tory inventory from Joyent listmachines json
@@ -30,7 +32,8 @@ def main(sysargs=sys.argv[:]):
 
     parser = argparse.ArgumentParser(
         usage=USAGE,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        version=__version__,
     )
     parser.add_argument(
         '-s', '--tory-server',

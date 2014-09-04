@@ -1,12 +1,8 @@
 # vim:fileencoding=utf-8
 
-import json
 import os
 
-from io import BytesIO
-
 from _pytest.monkeypatch import monkeypatch
-import pytest
 
 import tory_register
 
