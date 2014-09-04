@@ -33,8 +33,13 @@ def main(sysargs=sys.argv[:]):
     parser = argparse.ArgumentParser(
         usage=USAGE,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        version=__version__,
     )
+
+    if sys.version >= '3':
+        parser.add_argument('--version', action='version', version=__version__)
+    else:
+        parser.version = __version__
+
     parser.add_argument(
         '-s', '--tory-server',
         default=os.environ.get('TORY_SERVER', DEFAULT_TORY_SERVER),
