@@ -16,3 +16,10 @@ deploy:
   on:
     tags: true
     repo: modcloth/tory-client
+notifications:
+  email: github+tory-client@modcloth.com
+  hipchat:
+    rooms:
+      secure: WZcDoJKYyATfhUb8wgHKNwexuNDbmu7D9LL49LXGboJiOoDBfSZThZGjhlGEpx9MkK1Un7hQPBJM9AzVPAcb2pA9GHGRqg1RbCcO30hkuPc24WupN5Hk6pSdfRsov8t3Xb/J/RKFfRspbnZBow8X5hT69B3689MhQ6Of+nxT6gw=
+    on_success: change
+    on_failure: change
