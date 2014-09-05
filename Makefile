@@ -9,7 +9,7 @@ PYTEST_FLAGS ?= \
 	--pep8 -rs --pdb
 
 .PHONY: all
-all: clean normversion lint test
+all: clean normalize-version lint test
 
 .PHONY: lint
 lint:
@@ -27,7 +27,7 @@ clean:
 distclean:
 	git clean -dfx
 
-.PHONY: normversion
-normversion: $(shell git ls-files '*.py')
+.PHONY: normalize-version
+normalize-version: $(shell git ls-files '*.py')
 	git grep -l '__version__ =' | grep -v Makefile | \
 	    xargs sed -i -e "s/__version__ = '.*'/__version__ = '$(VERSION)'/"
