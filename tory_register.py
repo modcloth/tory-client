@@ -28,6 +28,8 @@ except ImportError:
     pass
 
 
+__version__ = '0.5.1'
+
 USAGE = """%(prog)s [options]
 
 Register a given host in tory.
@@ -51,8 +53,14 @@ IPADDR_RE = re.compile("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\\.|$)){4}$")
 def main(sysargs=sys.argv[:]):
     parser = argparse.ArgumentParser(
         usage=USAGE,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
+
+    if sys.version >= '3':
+        parser.add_argument('--version', action='version', version=__version__)
+    else:
+        parser.version = __version__
+
     parser.add_argument(
         '-H', '--hostname',
         metavar='TORY_HOSTNAME',

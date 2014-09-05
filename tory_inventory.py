@@ -15,6 +15,8 @@ except ImportError:
     import urlparse
 
 
+__version__ = '0.5.1'
+
 DEFAULT_SINCE = (
     datetime.datetime.utcnow() - datetime.timedelta(days=30)
 ).isoformat() + 'Z'
@@ -22,8 +24,14 @@ DEFAULT_SINCE = (
 
 def main(sysargs=sys.argv[:]):
     parser = argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
+
+    if sys.version >= '3':
+        parser.add_argument('--version', action='version', version=__version__)
+    else:
+        parser.version = __version__
+
     parser.add_argument(
         '--debug',
         action='store_true',
