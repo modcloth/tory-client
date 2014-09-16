@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # vim:fileencoding=utf-8
 
 import argparse
@@ -28,7 +27,7 @@ except ImportError:
     pass
 
 
-__version__ = '0.5.1'
+from . import __version__
 
 USAGE = """%(prog)s [options]
 

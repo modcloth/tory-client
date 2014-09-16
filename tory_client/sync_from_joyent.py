@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # vim:fileencoding=utf-8
 
 import argparse
@@ -15,7 +14,7 @@ except ImportError:
     import http.client as httpclient
 
 
-__version__ = '0.5.1'
+from . import __version__
 
 USAGE = """%(prog)s [options]
 

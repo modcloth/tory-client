@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# vim:fileencoding=utf-8
 from __future__ import print_function
 
 import argparse
@@ -15,7 +15,7 @@ except ImportError:
     import urlparse
 
 
-__version__ = '0.5.1'
+from . import __version__
 
 DEFAULT_SINCE = (
     datetime.datetime.utcnow() - datetime.timedelta(days=30)
