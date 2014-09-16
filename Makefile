@@ -1,15 +1,12 @@
-VERSION ?= $(shell cat VERSION)
 MAX_COMPLEXITY ?= 13
 PYTEST ?= py.test
 PYTEST_FLAGS ?= \
 	--cov-report term-missing \
-	--cov tory_sync_from_joyent \
-	--cov tory_register \
-	--cov tory_inventory \
+	--cov tory_client \
 	--pep8 -rs --pdb
 
 .PHONY: all
-all: clean normalize-version lint test
+all: clean lint test
 
 .PHONY: lint
 lint:
@@ -26,8 +23,3 @@ clean:
 .PHONY: distclean
 distclean:
 	git clean -dfx
-
-.PHONY: normalize-version
-normalize-version: $(shell git ls-files '*.py')
-	git grep -l '__version__ =' | grep -v Makefile | \
-	    xargs sed -i -e "s/__version__ = '.*'/__version__ = '$(VERSION)'/"

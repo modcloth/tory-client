@@ -4,7 +4,7 @@ import os
 
 from _pytest.monkeypatch import monkeypatch
 
-import tory_inventory
+from tory_client import inventory
 
 
 def fake_fetch_inventory(url):
@@ -14,9 +14,9 @@ def fake_fetch_inventory(url):
 def setup():
     os.environ.clear()
     mp = monkeypatch()
-    mp.setattr(tory_inventory, '_fetch_inventory', fake_fetch_inventory)
+    mp.setattr(inventory, '_fetch_inventory', fake_fetch_inventory)
 
 
 def test_main():
-    ret = tory_inventory.main(['tory-inventory'])
+    ret = inventory.main(['tory-inventory'])
     assert ret == 0

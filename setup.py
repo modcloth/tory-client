@@ -1,9 +1,23 @@
+# vim:fileencoding=utf-8
+
+import os
 import sys
 
-from setuptools import setup
+from codecs import open
+
+from setuptools import setup, find_packages
 
 
-__version__ = '0.5.1'
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+
+def get_version():
+    with open(os.path.join(HERE, 'tory_client', '__init__.py')) as infile:
+        return [
+            l.decode('utf-8').split(' = ')[1].strip('\' ')
+            for l in infile.read().splitlines(False)
+            if l.decode('utf-8').startswith('__version__')
+        ][0]
 
 
 def main():
@@ -15,7 +29,7 @@ def main():
         author_email='platformsphere+pypi@modcloth.com',
         description=desc,
         long_description=desc,
-        version=__version__,
+        version=get_version(),
         classifiers=[
             'Development Status :: 4 - Beta',
             'Environment :: Console',
@@ -30,16 +44,12 @@ def main():
             'Topic :: System :: Systems Administration',
             'Topic :: Utilities',
         ],
-        py_modules=[
-            'tory_inventory',
-            'tory_register',
-            'tory_sync_from_joyent',
-        ],
+        packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
         entry_points={
             'console_scripts': [
-                'tory-inventory = tory_inventory:main',
-                'tory-register = tory_register:main',
-                'tory-sync-from-joyent = tory_sync_from_joyent:main',
+                'tory-inventory = tory_client.inventory:main',
+                'tory-register = tory_client.register:main',
+                'tory-sync-from-joyent = tory_client.sync_from_joyent:main',
             ]
         }
     )
