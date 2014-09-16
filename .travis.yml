@@ -7,7 +7,7 @@ python:
 sudo: false
 env:
   global:
-  - PYTEST_FLAGS="--cov-report term-missing --cov tory_sync_from_joyent --cov tory_register --cov tory_inventory --pep8 -rs"
+  - PYTEST_FLAGS="--cov-report term-missing --cov tory_client --pep8 -rs"
 script: make
 deploy:
   provider: pypi

@@ -4,7 +4,7 @@ import os
 
 from _pytest.monkeypatch import monkeypatch
 
-import tory_register
+from tory_client import register
 
 
 def fake_put_host(server, auth_token, host_def):
@@ -18,23 +18,23 @@ def fake_get_local_ipv4():
 def setup():
     os.environ.clear()
     mp = monkeypatch()
-    mp.setattr(tory_register, '_put_host', fake_put_host)
-    mp.setattr(tory_register, '_get_local_ipv4', fake_get_local_ipv4)
+    mp.setattr(register, '_put_host', fake_put_host)
+    mp.setattr(register, '_get_local_ipv4', fake_get_local_ipv4)
 
 
 def test_main():
-    ret = tory_register.main(['tory-register'])
+    ret = register.main(['tory-register'])
     assert ret == 0
 
 
 def test_once_overrides_loop_seconds_env_var():
     os.environ['TORY_LOOP_SECONDS'] = '3600'
-    ret = tory_register.main(['tory-register', '--once'])
+    ret = register.main(['tory-register', '--once'])
     assert ret == 0
 
 
 def test_once_overrides_loop_seconds_flag():
-    ret = tory_register.main([
+    ret = register.main([
         'tory-register', '--once', '--loop-seconds=3600'
     ])
     assert ret == 0
