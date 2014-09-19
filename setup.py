@@ -23,7 +23,7 @@ def get_version():
 def main():
     desc = 'client tools for the tory ansible inventory'
     setup(
-        name='tory-client',
+        name='tory_client',
         url='https://github.com/modcloth/tory-client',
         author='ModCloth, Inc.',
         author_email='platformsphere+pypi@modcloth.com',
