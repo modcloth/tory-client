@@ -28,6 +28,7 @@ except ImportError:
 
 
 from . import __version__
+from .client import put_host, validate_host_def
 
 USAGE = """%(prog)s [options]
 
@@ -42,11 +43,6 @@ DEFAULT_HOST_TAGS_FILES = (
     '/usr/local/etc/host-tags.json',
     'host-tags.json'
 )
-HOSTNAME_RE = re.compile(
-    "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*" +
-    "[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$"
-)
-IPADDR_RE = re.compile("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\\.|$)){4}$")
 
 
 def main(sysargs=sys.argv[:]):
@@ -129,14 +125,14 @@ def main(sysargs=sys.argv[:]):
         'tags': tags,
     }
 
-    errors = _validate_host_def(host_def)
+    errors = validate_host_def(host_def)
     if errors:
         for error in errors:
             log.error(error)
         return 1
 
     while True:
-        status = _put_host(args.tory_server, args.auth_token, host_def)
+        status = put_host(args.tory_server, args.auth_token, host_def)
         if status == 201:
             log.info('Added host %s', host_def['name'])
         elif status == 200:
@@ -173,40 +169,6 @@ def _get_local_tags(files=DEFAULT_HOST_TAGS_FILES):
             tagdict.update(json.load(infile))
 
     return [[str(key), str(value)] for key, value in tagdict.items()]
-
-
-def _validate_host_def(host_def):
-    errors = []
-
-    for key in ('name', 'ip', 'tags'):
-        if key not in host_def:
-            errors.append('Missing required key {!r}'.format(key))
-
-    if not HOSTNAME_RE.match(host_def.get('name', '')):
-        errors.append('Invalid hostname')
-
-    if not IPADDR_RE.match(host_def.get('ip', '')):
-        errors.append('Invalid ipv4 address')
-
-    return errors
-
-
-def _put_host(server, auth_token, host_def):
-    url = urlparse(server)
-    conn = httpclient.HTTPConnection(
-        url.netloc.split(':')[0], int(url.port or 80)
-    )
-    conn.request(
-        'PUT',
-        '{}/{}'.format(url.path, host_def['name']),
-        json.dumps({'host': host_def}),
-        {
-            'Content-Type': 'application/json',
-            'Authorization': 'token {}'.format(auth_token)
-        }
-    )
-    resp = conn.getresponse()
-    return resp.status
 
 
 if __name__ == '__main__':

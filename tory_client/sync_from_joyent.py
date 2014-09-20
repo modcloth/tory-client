@@ -6,15 +6,8 @@ import logging
 import os
 import sys
 
-try:
-    from urlparse import urlparse
-    import httplib as httpclient
-except ImportError:
-    from urllib.parse import urlparse
-    import http.client as httpclient
-
-
 from . import __version__
+from .sync import joyent
 
 USAGE = """%(prog)s [options]
 
@@ -72,67 +65,13 @@ def main(sysargs=sys.argv[:]):
 
     for machine in machines:
         try:
-            _sync_one_machine(log, args.tory_server, args.auth_token, machine)
+            joyent.sync_machine(
+                log, args.tory_server, args.auth_token, machine
+            )
         except Exception:
             log.exception('failed to sync machine %s', machine['name'])
 
     return 0
-
-
-def _sync_one_machine(log, server, auth_token, machine):
-    host_def = machine.copy()
-    for key in ('id', 'ips'):
-        host_def.pop(key)
-
-    interpreter = '/usr/bin/python'
-    if machine.get('type') == 'smartmachine':
-        interpreter = '/opt/local/bin/python'
-
-    hostname = machine['name']
-    host_def.update({
-        'ip': machine.pop('ips')[0],
-        'name': hostname,
-        'vars': {
-            'ansible_python_interpreter': interpreter,
-            'disk': str(machine.pop('disk')),
-            'joyent_id': str(machine.pop('id')),
-            'memory': str(machine.pop('memory')),
-        },
-        'tags': _stringified_dict(machine.pop('tags')),
-    })
-
-    status = _put_host(server, auth_token, host_def)
-    if status == 201:
-        log.info('Added host %s', hostname)
-    elif status == 200:
-        log.info('Updated host %s', hostname)
-    else:
-        log.warn('Failed to create or update host %s: %s',
-                 hostname, status)
-
-
-def _stringified_dict(indict):
-    return dict(
-        ((str(key), str(value)) for key, value in indict.items())
-    )
-
-
-def _put_host(server, auth_token, host_def):
-    url = urlparse(server)
-    conn = httpclient.HTTPConnection(
-        url.netloc.split(':')[0], int(url.port or 80)
-    )
-    conn.request(
-        'PUT',
-        '{}/{}'.format(url.path, host_def['name']),
-        json.dumps({'host': host_def}),
-        {
-            'Content-Type': 'application/json',
-            'Authorization': 'token {}'.format(auth_token)
-        }
-    )
-    resp = conn.getresponse()
-    return resp.status
 
 
 if __name__ == '__main__':

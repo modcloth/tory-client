@@ -18,7 +18,7 @@ def fake_get_local_ipv4():
 def setup():
     os.environ.clear()
     mp = monkeypatch()
-    mp.setattr(register, '_put_host', fake_put_host)
+    mp.setattr(register, 'put_host', fake_put_host)
     mp.setattr(register, '_get_local_ipv4', fake_get_local_ipv4)
 
 
