@@ -1,7 +1,6 @@
 # vim:fileencoding=utf-8
 
 import argparse
-import json
 import logging
 import os
 import socket
@@ -24,6 +23,8 @@ except ImportError:
 
 from . import __version__
 from .client import put_host, validate_host_def
+from .junkdrawer import kvpair
+from .local_tags import load_local_tags, DEFAULT_HOST_TAGS_FILES
 
 USAGE = """%(prog)s [options]
 
@@ -33,11 +34,6 @@ DEFAULT_TORY_SERVER = 'http://localhost:9462/ansible/hosts'
 DEFAULT_IFNAME = 'eth0'
 if sys.platform == 'darwin':
     DEFAULT_IFNAME = 'en0'
-DEFAULT_HOST_TAGS_FILES = (
-    '/etc/host-tags.json',
-    '/usr/local/etc/host-tags.json',
-    'host-tags.json'
-)
 
 
 def main(sysargs=sys.argv[:]):
@@ -69,16 +65,17 @@ def main(sysargs=sys.argv[:]):
         '-j', '--host-tags-json',
         metavar='TORY_HOST_TAGS_JSON',
         default=os.environ.get(
-            'TORY_HOST_TAGS_JSON', DEFAULT_HOST_TAGS_FILES[0]
+            'TORY_HOST_TAGS_JSON',
+            DEFAULT_HOST_TAGS_FILES[0]
         ),
         help='json file from which tags will be read',
     )
     parser.add_argument(
         '-t', '--tag',
         metavar='TORY_TAGS',
-        dest='tags', type=_kvpair, action='append',
+        dest='tags', type=kvpair, action='append',
         default=list(ifilter(lambda pair: len(pair) == 2, [
-            _kvpair(s) for s in os.environ.get('TORY_TAGS', '').split(':')
+            kvpair(s) for s in os.environ.get('TORY_TAGS', '').split(':')
         ])),
         help='tags assigned to host (as key=value pairs)',
     )
@@ -110,8 +107,8 @@ def main(sysargs=sys.argv[:]):
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
     log = logging.getLogger('tory-register')
 
-    tags = dict(_get_local_tags())
-    tags.update(dict(_get_local_tags([args.host_tags_json])))
+    tags = dict(load_local_tags())
+    tags.update(dict(load_local_tags([args.host_tags_json])))
     tags.update(dict(args.tags))
 
     host_def = {
@@ -142,10 +139,6 @@ def main(sysargs=sys.argv[:]):
         time.sleep(args.loop_seconds)
 
 
-def _kvpair(string):
-    return string.strip().split('=', 1)
-
-
 def _get_local_ipv4(ifname=DEFAULT_IFNAME):
     if HAS_NETIFACES:
         try:
@@ -153,17 +146,6 @@ def _get_local_ipv4(ifname=DEFAULT_IFNAME):
         except ValueError:
             return ''
     return ''
-
-
-def _get_local_tags(files=DEFAULT_HOST_TAGS_FILES):
-    tagdict = {}
-    for filename in files:
-        if not os.path.exists(filename):
-            continue
-        with open(filename) as infile:
-            tagdict.update(json.load(infile))
-
-    return [[str(key), str(value)] for key, value in tagdict.items()]
 
 
 if __name__ == '__main__':
