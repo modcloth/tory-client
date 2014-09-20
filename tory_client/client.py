@@ -1,6 +1,7 @@
 # vim:fileencoding=utf-8
 
 import re
+import json
 
 try:
     from urlparse import urlparse
