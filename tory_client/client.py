@@ -19,19 +19,34 @@ IPADDR_RE = re.compile("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\\.|$)){4}$")
 
 
 def put_host(server, auth_token, host_def):
+    return _make_authenticated_request(
+        'PUT',
+        host_def['name'],
+        json.dumps({'host': host_def}),
+        server,
+        auth_token
+    )
+
+
+def delete_host(server, auth_token, host_identifier):
+    return _make_authenticated_request(
+        'DELETE',
+        host_identifier,
+        None,
+        server,
+        auth_token
+    )
+
+
+def _make_authenticated_request(method, path, body, server, auth_token):
     url = urlparse(server)
     conn = httpclient.HTTPConnection(
         url.netloc.split(':')[0], int(url.port or 80)
     )
-    conn.request(
-        'PUT',
-        '{}/{}'.format(url.path, host_def['name']),
-        json.dumps({'host': host_def}),
-        {
-            'Content-Type': 'application/json',
-            'Authorization': 'token {}'.format(auth_token)
-        }
-    )
+    conn.request(method, '{}/{}'.format(url.path, path), body, {
+        'Content-Type': 'application/json',
+        'Authorization': 'token {}'.format(auth_token)
+    })
     resp = conn.getresponse()
     return resp.status
 
