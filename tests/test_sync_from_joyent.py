@@ -9,6 +9,7 @@ from io import BytesIO
 from _pytest.monkeypatch import monkeypatch
 import pytest
 
+from tory_client.sync import joyent
 from tory_client import sync_from_joyent
 
 
@@ -20,14 +21,14 @@ def sdc_listmachines_json_stream(sampledata):
     return BytesIO(sdc_bytes)
 
 
-def fake_put_host(server, auth_token, host_def):
-    return 200
+def fake_sync_machine(log, server, auth_token, host_def):
+    pass
 
 
 def setup():
     os.environ.clear()
     mp = monkeypatch()
-    mp.setattr(sync_from_joyent, '_put_host', fake_put_host)
+    mp.setattr(joyent, 'sync_machine', fake_sync_machine)
 
 
 def test_main(monkeypatch, sdc_listmachines_json_stream):
