@@ -5,6 +5,7 @@ from ..junkdrawer import stringified_dict
 
 
 def sync_machine(log, server, auth_token, machine):
+    machine = machine.copy()
     host_def = machine.copy()
     for key in ('id', 'ips'):
         host_def.pop(key)
