@@ -2,8 +2,6 @@
 
 import os
 
-from _pytest.monkeypatch import monkeypatch
-
 from tory_client import unregister
 
 
