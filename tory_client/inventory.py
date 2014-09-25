@@ -16,6 +16,7 @@ except ImportError:
 
 
 from . import __version__
+from .junkdrawer import HelpFormatter
 
 DEFAULT_SINCE = (
     datetime.datetime.utcnow() - datetime.timedelta(days=30)
@@ -23,15 +24,9 @@ DEFAULT_SINCE = (
 
 
 def main(sysargs=sys.argv[:]):
-    parser = argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    )
+    parser = argparse.ArgumentParser(formatter_class=HelpFormatter)
 
-    if sys.version >= '3':
-        parser.add_argument('--version', action='version', version=__version__)
-    else:
-        parser.version = __version__
-
+    parser.add_argument('--version', action='version', version=__version__)
     parser.add_argument(
         '--debug',
         action='store_true',
@@ -128,7 +123,3 @@ def main(sysargs=sys.argv[:]):
 
 def _fetch_inventory(url):
     return urlopen(url).read()
-
-
-if __name__ == '__main__':
-    sys.exit(main())

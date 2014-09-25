@@ -8,6 +8,7 @@ import sys
 
 from . import __version__
 from .sync import joyent
+from .junkdrawer import HelpFormatter
 
 USAGE = """%(prog)s [options]
 
@@ -24,14 +25,10 @@ def main(sysargs=sys.argv[:]):
 
     parser = argparse.ArgumentParser(
         usage=USAGE,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        formatter_class=HelpFormatter,
     )
 
-    if sys.version >= '3':
-        parser.add_argument('--version', action='version', version=__version__)
-    else:
-        parser.version = __version__
-
+    parser.add_argument('--version', action='version', version=__version__)
     parser.add_argument(
         '-s', '--tory-server',
         default=os.environ.get('TORY_SERVER', DEFAULT_TORY_SERVER),
@@ -72,7 +69,3 @@ def main(sysargs=sys.argv[:]):
             log.exception('failed to sync machine %s', machine['name'])
 
     return 0
-
-
-if __name__ == '__main__':
-    sys.exit(main())

@@ -49,6 +49,7 @@ def main():
             'console_scripts': [
                 'tory-inventory = tory_client.inventory:main',
                 'tory-register = tory_client.register:main',
+                'tory-unregister = tory_client.unregister:main',
                 'tory-sync-from-joyent = tory_client.sync_from_joyent:main',
             ]
         }
