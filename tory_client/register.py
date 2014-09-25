@@ -23,7 +23,7 @@ except ImportError:
 
 from . import __version__
 from .client import put_host, validate_host_def
-from .junkdrawer import kvpair
+from .junkdrawer import kvpair, HelpFormatter
 from .local_tags import load_local_tags, DEFAULT_HOST_TAGS_FILES
 
 USAGE = """%(prog)s [options]
@@ -39,14 +39,10 @@ if sys.platform == 'darwin':
 def main(sysargs=sys.argv[:]):
     parser = argparse.ArgumentParser(
         usage=USAGE,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        formatter_class=HelpFormatter,
     )
 
-    if sys.version >= '3':
-        parser.add_argument('--version', action='version', version=__version__)
-    else:
-        parser.version = __version__
-
+    parser.add_argument('--version', action='version', version=__version__)
     parser.add_argument(
         '-H', '--hostname',
         metavar='TORY_HOSTNAME',
@@ -146,7 +142,3 @@ def _get_local_ipv4(ifname=DEFAULT_IFNAME):
         except ValueError:
             return ''
     return ''
-
-
-if __name__ == '__main__':
-    sys.exit(main())
