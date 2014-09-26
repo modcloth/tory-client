@@ -27,11 +27,15 @@ def fake_sync_machine(log, server, auth_token, host_def):
 
 def setup():
     os.environ.clear()
+
+
+def teardown():
     mp = monkeypatch()
-    mp.setattr(joyent, 'sync_machine', fake_sync_machine)
+    mp.undo()
 
 
 def test_main(monkeypatch, sdc_listmachines_json_stream):
+    monkeypatch.setattr(joyent, 'sync_machine', fake_sync_machine)
     monkeypatch.setattr('sys.stdin', sdc_listmachines_json_stream)
     ret = sync_from_joyent.main(['tory-sync-from-joyent'])
     assert ret == 0
