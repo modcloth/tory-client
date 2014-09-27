@@ -6,7 +6,6 @@ import sys
 
 from io import BytesIO
 
-from _pytest.monkeypatch import monkeypatch
 import pytest
 
 from tory_client.sync import joyent
@@ -27,11 +26,10 @@ def fake_sync_machine(log, server, auth_token, host_def):
 
 def setup():
     os.environ.clear()
-    mp = monkeypatch()
-    mp.setattr(joyent, 'sync_machine', fake_sync_machine)
 
 
 def test_main(monkeypatch, sdc_listmachines_json_stream):
+    monkeypatch.setattr(joyent, 'sync_machine', fake_sync_machine)
     monkeypatch.setattr('sys.stdin', sdc_listmachines_json_stream)
     ret = sync_from_joyent.main(['tory-sync-from-joyent'])
     assert ret == 0

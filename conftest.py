@@ -1,6 +1,6 @@
 # vim:fileencoding=utf-8
-
 import json
+import logging
 import os
 
 import pytest
@@ -30,3 +30,16 @@ def _load_json(top_dir, name):
     filename = os.path.join(top_dir, 'sampledata', '{}.json'.format(name))
     with open(filename) as infile:
         return json.load(infile)
+
+
+@pytest.fixture
+def testlog():
+    return logging.getLogger('whatever')
+
+
+def fake_put_host(server, auth_token, host_def):
+    return 200
+
+
+def fake_get_local_ipv4():
+    return '127.0.0.1'

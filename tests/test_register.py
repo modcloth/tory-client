@@ -4,15 +4,9 @@ import os
 
 from _pytest.monkeypatch import monkeypatch
 
+from conftest import fake_put_host, fake_get_local_ipv4
+
 from tory_client import register
-
-
-def fake_put_host(server, auth_token, host_def):
-    return 200
-
-
-def fake_get_local_ipv4():
-    return '127.0.0.1'
 
 
 def setup():
