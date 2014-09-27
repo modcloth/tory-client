@@ -2,13 +2,7 @@
 
 import re
 import json
-
-try:
-    from urlparse import urlparse
-    import httplib as httpclient
-except ImportError:
-    from urllib.parse import urlparse
-    import http.client as httpclient
+from requests import request
 
 
 HOSTNAME_RE = re.compile(
@@ -39,16 +33,13 @@ def delete_host(server, auth_token, host_identifier):
 
 
 def _make_authenticated_request(method, path, body, server, auth_token):
-    url = urlparse(server)
-    conn = httpclient.HTTPConnection(
-        url.netloc.split(':')[0], int(url.port or 80)
-    )
-    conn.request(method, '{}/{}'.format(url.path, path), body, {
-        'Content-Type': 'application/json',
-        'Authorization': 'token {}'.format(auth_token)
-    })
-    resp = conn.getresponse()
-    return resp.status
+    resp = request(method, '{}/{}'.format(server, path),
+                   data=body,
+                   headers={
+                       'Content-Type': 'application/json',
+                       'Authorization': 'token {}'.format(auth_token)
+        })
+    return resp.status_code
 
 
 def validate_host_def(host_def):

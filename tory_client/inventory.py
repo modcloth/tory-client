@@ -5,15 +5,14 @@ import argparse
 import datetime
 import os
 import sys
+import requests
 
 try:
-    from urllib.request import urlopen
     import urllib.parse as urlparse
     from urllib.parse import urlencode
 except ImportError:
-    from urllib import urlopen, urlencode
+    from urllib import urlencode
     import urlparse
-
 
 from . import __version__
 from .junkdrawer import HelpFormatter
@@ -122,4 +121,4 @@ def main(sysargs=sys.argv[:]):
 
 
 def _fetch_inventory(url):
-    return urlopen(url).read()
+    return requests.get(url).text
