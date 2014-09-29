@@ -1,6 +1,8 @@
+netifaces
+requests
+
 flake8
 pytest
 pytest-cov
 pytest-pep8
-requests
 tox

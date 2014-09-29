@@ -12,19 +12,12 @@ try:
 except ImportError:
     ifilter = filter
 
-HAS_NETIFACES = False
-
-try:
-    import netifaces
-    HAS_NETIFACES = True
-except ImportError:
-    pass
-
-
 from . import __version__
 from .client import put_host, validate_host_def
 from .junkdrawer import kvpair, HelpFormatter
 from .local_tags import load_local_tags, DEFAULT_HOST_TAGS_FILES
+
+import netifaces
 
 USAGE = """%(prog)s [options]
 
@@ -136,9 +129,7 @@ def main(sysargs=sys.argv[:]):
 
 
 def _get_local_ipv4(ifname=DEFAULT_IFNAME):
-    if HAS_NETIFACES:
-        try:
-            return netifaces.ifaddresses(ifname)[netifaces.AF_INET][0]['addr']
-        except ValueError:
-            return ''
-    return ''
+    try:
+        return netifaces.ifaddresses(ifname)[netifaces.AF_INET][0]['addr']
+    except ValueError:
+        return ''
