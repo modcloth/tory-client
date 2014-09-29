@@ -73,6 +73,13 @@ def main(sysargs=sys.argv[:]):
         help='only return hosts modified since iso8601 timestamp',
         default=os.environ.get('TORY_SINCE', DEFAULT_SINCE),
     )
+    parser.add_argument(
+        '-B',
+        '--before',
+        metavar='TORY_BEFORE',
+        help='only return hosts modified before iso8601 timestamp',
+        default=os.environ.get('TORY_BEFORE', ''),
+    )
 
     args = parser.parse_args(sysargs[1:])
     scheme, netloc, path, params, query, fragment = \
@@ -92,6 +99,9 @@ def main(sysargs=sys.argv[:]):
 
     if args.since:
         query_dict['since'] = args.since
+
+    if args.before:
+        query_dict['before'] = args.before
 
     url = urlparse.urlunparse(
         urlparse.ParseResult(
