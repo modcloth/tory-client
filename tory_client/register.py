@@ -17,6 +17,8 @@ from .client import put_host, validate_host_def
 from .junkdrawer import kvpair, HelpFormatter
 from .local_tags import load_local_tags, DEFAULT_HOST_TAGS_FILES
 
+import netifaces
+
 USAGE = """%(prog)s [options]
 
 Register a given host in tory.
