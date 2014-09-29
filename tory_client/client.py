@@ -33,12 +33,14 @@ def delete_host(server, auth_token, host_identifier):
 
 
 def _make_authenticated_request(method, path, body, server, auth_token):
-    resp = request(method, '{}/{}'.format(server, path),
-                   data=body,
-                   headers={
-                       'Content-Type': 'application/json',
-                       'Authorization': 'token {}'.format(auth_token)
-        })
+    resp = request(
+        method, '{}/{}'.format(server, path),
+        data=body,
+        headers={
+            'Content-Type': 'application/json',
+            'Authorization': 'token {}'.format(auth_token)
+        }
+    )
     return resp.status_code
 
 

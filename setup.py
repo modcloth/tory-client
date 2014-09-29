@@ -1,6 +1,7 @@
 # vim:fileencoding=utf-8
 
 import os
+import re
 import sys
 
 from codecs import open
@@ -18,6 +19,15 @@ def get_version():
             for l in infile.read().splitlines(False)
             if l.decode('utf-8').startswith('__version__')
         ][0]
+
+
+def get_requirements():
+    with open(os.path.join(HERE, 'requirements.txt')) as infile:
+        return [
+            l.decode('utf-8').strip()
+            for l in infile.read().splitlines(False)
+            if not re.match('^(flake8|pytest|tox)', l.decode('utf-8'))
+        ]
 
 
 def main():
@@ -45,6 +55,7 @@ def main():
             'Topic :: Utilities',
         ],
         packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
+        install_requires=get_requirements(),
         entry_points={
             'console_scripts': [
                 'tory-inventory = tory_client.inventory:main',
