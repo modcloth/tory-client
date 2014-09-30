@@ -1,6 +1,11 @@
 # vim:fileencoding=utf-8
-
 import argparse
+import datetime
+
+
+DEFAULT_SINCE = (
+    datetime.datetime.utcnow() - datetime.timedelta(days=30)
+).isoformat() + 'Z'
 
 
 def kvpair(string):

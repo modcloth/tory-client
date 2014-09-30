@@ -1,4 +1,7 @@
+colorama
+humanize
 netifaces
+python-dateutil
 requests
 
 flake8

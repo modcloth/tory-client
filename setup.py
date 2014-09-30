@@ -1,5 +1,4 @@
 # vim:fileencoding=utf-8
-
 import os
 import re
 import sys
@@ -61,6 +60,7 @@ def main():
                 'tory-inventory = tory_client.inventory:main',
                 'tory-register = tory_client.register:main',
                 'tory-unregister = tory_client.unregister:main',
+                'tory-status = tory_client.status:main',
                 'tory-sync-from-joyent = tory_client.sync_from_joyent:main',
             ]
         }
