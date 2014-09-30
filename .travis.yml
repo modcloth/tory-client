@@ -3,12 +3,14 @@ language: python
 python:
 - '2.7'
 - '3.4'
-- pypy
 sudo: false
-env:
-  global:
-  - PYTEST_FLAGS="--cov-report term-missing --cov tory_client --pep8 -rs"
-script: make
+script:
+- tox -e flake8
+- if [[ "$TRAVIS_PYTHON_VERSION" == "3.4" ]] ; then
+    tox -e py34 ;
+  else
+    tox -e py27 ;
+  fi
 deploy:
   provider: pypi
   user: modcloth
