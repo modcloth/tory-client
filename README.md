@@ -2,6 +2,7 @@ tory-client
 ===========
 
 [![Build Status](https://travis-ci.org/modcloth/tory-client.svg)](https://travis-ci.org/modcloth/tory-client)
+[![PyPI version](https://badge.fury.io/py/tory_client.svg)](http://badge.fury.io/py/tory_client)
 
 Client executables for working with a [tory server](https://github.com/modcloth/tory)
 
