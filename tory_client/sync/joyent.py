@@ -11,15 +11,21 @@ def sync_machine(log, server, auth_token, machine):
         host_def.pop(key)
 
     interpreter = '/usr/bin/python'
+    user = 'ubuntu'
     if machine.get('type') == 'smartmachine':
         interpreter = '/opt/local/bin/python'
+        user = 'root'
 
     hostname = machine['name']
+    ip = machine.pop('ips')[0]
     host_def.update({
-        'ip': machine.pop('ips')[0],
+        'ip': ip,
         'name': hostname,
         'vars': {
             'ansible_python_interpreter': interpreter,
+            'ansible_ssh_host': ip,
+            'ansible_ssh_user': user,
+            'ansible_inventory_hostname': hostname,
             'disk': str(machine.pop('disk')),
             'joyent_id': str(machine.pop('id')),
             'memory': str(machine.pop('memory')),
