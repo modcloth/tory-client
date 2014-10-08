@@ -25,6 +25,11 @@ tox
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
+## Uploading new versions
+
+- `python setup.py register`
+- `python setup.py bdist_wheel sdist upload`
+
 ## Authors
 
 See [AUTHORS.md](./AUTHORS.md)
